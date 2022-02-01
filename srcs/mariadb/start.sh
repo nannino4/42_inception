@@ -14,7 +14,7 @@ cat <<-EOF > /etc/mysql/my.cnf
 EOF
 
 if [ ! -d $DATADIR/mysql ]; then #check if database is not already created
-	echo "\n[i]Initialization of database\n"
+	echo "\n[i] Initialization of database\n"
 	mysql_install_db --datadir=$DATADIR > /dev/null
 
 	echo "\n[i] start mysqld_safe\n"

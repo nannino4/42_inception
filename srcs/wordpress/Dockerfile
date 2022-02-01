@@ -7,21 +7,25 @@ RUN		apt-get update && apt-get install -y\
 		dumb-init
 
 RUN		mkdir -p /var/www/gcefalo &&\
-		chown -R www-data var/www/gcefalo && \
-		chmod -R 755 var/www/gcefalo && \
-		wget https://wordpress.org/latest.tar.gz && \
-		tar -xzf latest.tar.gz && \
-		mv wordpress /var/www/gcefalo/wordpress && \
-		rm -rf latest.tar.gz
+		chown -R www-data:www-data var/www/gcefalo && \
+		chmod -R 755 var/www/gcefalo
+
+# RUN		wget https://wordpress.org/latest.tar.gz && \
+# 		tar -xzf latest.tar.gz && \
+# 		echo `ls -l` && \
+# 		mv wordpress /var/www/gcefalo/wordpress && \
+# 		echo `ls -l /var/www/gcefalo` && \
+# 		rm -rf latest.tar.gz
 
 RUN		sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.3/fpm/php.ini && \
 		mkdir -p /run/php && \
 		chown -R www-data /run/php && \
 		chmod -R 755 /run/php
 
-COPY	./wp-config.php ./var/www/gcefalo/wordpress
-COPY	./php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
-COPY	./www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY	./wp-config.php	/
+COPY	./php-fpm.conf	/
+COPY	./www.conf		/
+COPY	./start.sh		/
 
 ENTRYPOINT	[ "dumb-init", "--" ]
-CMD			[ "php-fpm7.3", "-F" ]
+CMD			[ "/start.sh" ]

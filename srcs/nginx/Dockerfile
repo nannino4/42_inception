@@ -14,7 +14,7 @@ RUN		mkdir -p /var/www/gcefalo && \
 		chown -R www-data:www-data var/www/gcefalo && \
 		chmod -R 755 var/www/gcefalo
 
-COPY	./gcefalo.conf /etc/nginx/conf.d/gcefalo.conf
+# COPY	./gcefalo.conf /etc/nginx/conf.d/gcefalo.conf
 COPY	./gcefalo.conf /etc/nginx/sites-available/default
 
 EXPOSE	443
