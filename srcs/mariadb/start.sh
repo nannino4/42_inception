@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "\n[i] Set Configuration for Mysql\n"
+echo "\n- Set Configuration for Mysql\n"
 cat <<-EOF > /etc/mysql/my.cnf
 	[mysqld]
 	user = root
@@ -13,17 +13,16 @@ cat <<-EOF > /etc/mysql/my.cnf
 	socket = /run/mysqld/mysqld.sock
 EOF
 
-if [ ! -d $DATADIR/mysql ]; then #check if database is not already created
-	echo "\n[i] Initialization of database\n"
+if [ ! -d $DATADIR/mysql ]; then
+	echo "\n- Initialization of database\n"
 	mysql_install_db --datadir=$DATADIR > /dev/null
 
-	echo "\n[i] start mysqld_safe\n"
+	echo "\n- start mysqld_safe\n"
 	mysqld_safe &
 
 	sleep 2
 
-	echo "\n[i] Delete useless stuff\n[i] Set password for root\n[i] Create database\n[i] Create user\n"
-	#connecte as root without password then set password at root 
+	echo "\n- Delete useless stuff\n- Set password for root\n- Create database\n- Create user\n"
 	mysql -u  root --skip-password <<- EOF 
 		USE mysql;
 		FLUSH PRIVILEGES;
@@ -41,37 +40,15 @@ if [ ! -d $DATADIR/mysql ]; then #check if database is not already created
 	EOF
 	sleep 2
 
-	echo "[i] Shut down the server with mysqladmin"
+	echo "- Shut down the server with mysqladmin"
 	mysqladmin -uroot -p"$MARIADB_ROOT_PSW" shutdown
-	# echo "[i] database restarting\n"
+	# echo "- database restarting\n"
 	sleep 2
 else
-	echo "\n[i] Skipping initializatio cause Mysql database is already created"
+	echo "\n- Skipping initialization: mysql database already initialized"
 fi
-
-
-# echo "\n[i] Service mysql start\n"
-# service mysql start
-# sleep 2
-
-# echo "\n[i] Change root psw\n"
-# mysql -uroot <<EOF
-# ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIADB_ROOT_PSW';
-# EOF
-
-# echo "\n[i] Create database and user\n"
-# mysql -uroot -p$MARIADB_ROOT_PSW <<EOF
-# CREATE DATABASE $WP_DB_NAME;\
-# CREATE USER '$WP_DB_ADMIN'@'%' IDENTIFIED by '$WP_DB_ADMIN_PSW';\
-# GRANT ALL PRIVILEGES ON $WP_DB_NAME.* TO '$WP_DB_ADMIN'@'%' WITH GRANT OPTION;\
-# FLUSH PRIVILEGES;
-# EOF
-
-# echo "\n[i] mysqladmin shutdown\n"
-# mysqladmin -uroot -p$MARIADB_ROOT_PSW shutdown
-# sleep 2
 
 sleep 5
 
-echo "[i] Starting mariadb server\n"
+echo "- Starting mariadb server\n"
 exec mysqld -u root

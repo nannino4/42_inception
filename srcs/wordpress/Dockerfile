@@ -10,13 +10,6 @@ RUN		mkdir -p /var/www/gcefalo &&\
 		chown -R www-data:www-data var/www/gcefalo && \
 		chmod -R 755 var/www/gcefalo
 
-# RUN		wget https://wordpress.org/latest.tar.gz && \
-# 		tar -xzf latest.tar.gz && \
-# 		echo `ls -l` && \
-# 		mv wordpress /var/www/gcefalo/wordpress && \
-# 		echo `ls -l /var/www/gcefalo` && \
-# 		rm -rf latest.tar.gz
-
 RUN		sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.3/fpm/php.ini && \
 		mkdir -p /run/php && \
 		chown -R www-data /run/php && \
@@ -26,6 +19,7 @@ COPY	./wp-config.php	/
 COPY	./php-fpm.conf	/
 COPY	./www.conf		/
 COPY	./start.sh		/
+RUN     chmod 755 /start.sh
 
 ENTRYPOINT	[ "dumb-init", "--" ]
 CMD			[ "/start.sh" ]

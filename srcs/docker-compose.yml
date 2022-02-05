@@ -1,4 +1,4 @@
-version: "2.2.3"
+# version: "1.29.0"
 
 services:
 
@@ -13,7 +13,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - /home/gcefalo/data/wordpress:/var/www/gcefalo
+      - ~/data/wordpress:/var/www/gcefalo
     networks:
       - inception_network
     restart: unless-stopped
@@ -27,7 +27,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - /home/gcefalo/data/wordpress:/var/www/gcefalo
+      - ~/data/wordpress:/var/www/gcefalo
     networks:
       - inception_network
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - /home/gcefalo/data/db:/var/lib/mysql
+      - ~/data/db:/var/lib/mysql
     networks:
       - inception_network
     restart: unless-stopped

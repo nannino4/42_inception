@@ -6,7 +6,7 @@ $(NAME):
 			docker-compose -f ./srcs/docker-compose.yml up --build
 
 domain:
-			echo "127.0.0.1 gcefalo.42.fr" | sudo tee -a /etc/hosts
+			echo "127.0.0.1 gcefalo.42.fr" >> /etc/hosts
 
 clean:
 			docker-compose -f ./srcs/docker-compose.yml down
@@ -17,7 +17,7 @@ cleanv:		clean
 
 fclean:		clean
 			docker system prune -af
-			sudo rm -rf /home/gcefalo/data/db
-			sudo rm -rf /home/gcefalo/data/wordpress
+			rm -rf ~/data/db
+			rm -rf ~/data/wordpress
 
 .PHONY:		all clean fclean cleanv domain $(NAME)
